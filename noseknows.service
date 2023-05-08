@@ -1,0 +1,16 @@
+[Unit]
+Description=NoseKnows
+ConditionPathExists=/opt/noseknows/bin/noseknows
+After=network.target
+
+[Service]
+ExecStart=/opt/noseknows/bin/noseknows
+WorkingDirectory=/opt/home
+StandardOutput=inherit
+StandardError=inherit
+User=pi
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
