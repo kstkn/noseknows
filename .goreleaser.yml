@@ -78,3 +78,4 @@ nfpms:
         type: config
     scripts:
       postinstall: "scripts/postinstall.sh"
+      preremove: "scripts/preremove.sh"
