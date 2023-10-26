@@ -1,0 +1,72 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod download
+release:
+  prerelease: auto
+builds:
+- env:
+    - CGO_ENABLED=0
+  main: main.go
+  # GOOS list to build for.
+  # For more info refer to: https://golang.org/doc/install/source#environment
+  # Defaults are darwin and linux.
+  goos:
+    - linux
+    # - darwin
+    # - freebsd
+    # - windows
+
+  # GOARCH to build for.
+  # For more info refer to: https://golang.org/doc/install/source#environment
+  # Defaults are 386 and amd64.
+  goarch:
+    # - amd64
+    - arm
+    # - arm64
+    # - 386
+
+  # GOARM to build for when GOARCH is arm.
+  # For more info refer to: https://golang.org/doc/install/source#environment
+  # Default is only 6.
+  goarm:
+    - 7
+
+  # GOMIPS and GOMIPS64 to build when GOARCH is mips, mips64, mipsle or mips64le.
+  # For more info refer to: https://golang.org/doc/install/source#environment
+  # Default is empty.
+  gomips:
+    - hardfloat
+    - softfloat
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+    - '^ci:'
+
+nfpms:
+  - id: default
+    vendor: Sergei Kasatkin
+    maintainer: Sergei Kasatkin
+    homepage: https://github.com/kstkn/noseknows
+    description: Prometheus exporter for ePIN pollen data
+    license: MIT License
+    formats:
+      - deb
+      # - rpm
+      # - apk
+    conflicts:
+      - noseknows
+    bindir: /usr/bin
+    contents:
+      - src: ./systemd/noseknows.service
+        dst: /etc/systemd/system/noseknows.service
+        type: config

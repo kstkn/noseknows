@@ -1,15 +1,13 @@
 [Unit]
 Description=NoseKnows
-ConditionPathExists=/opt/noseknows/bin/noseknows
 After=network.target
+Before=prometheus.service
 
 [Service]
-ExecStart=/opt/noseknows/bin/noseknows
-WorkingDirectory=/opt/home
+Restart=on-failure
+ExecStart=/usr/bin/noseknows
 StandardOutput=inherit
 StandardError=inherit
-User=pi
-Restart=on-failure
 RestartSec=10
 
 [Install]
