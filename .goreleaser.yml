@@ -52,8 +52,13 @@ changelog:
     - '^test:'
     - '^ci:'
 
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+
+
 nfpms:
   - id: default
+    file_name_template: '{{ .PackageName }}_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}_{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}'
     vendor: Sergei Kasatkin
     maintainer: Sergei Kasatkin
     homepage: https://github.com/kstkn/noseknows
