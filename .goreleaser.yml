@@ -73,7 +73,7 @@ nfpms:
       - noseknows
     bindir: /usr/bin
     contents:
-      - src: ./systemd/noseknows.service
+      - src: systemd/noseknows.service
         dst: /etc/systemd/system/noseknows.service
         type: config
     scripts:
