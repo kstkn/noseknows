@@ -9,6 +9,7 @@ ExecStart=/usr/bin/noseknows
 StandardOutput=inherit
 StandardError=inherit
 RestartSec=10
+User=noseknows
 
 [Install]
 WantedBy=multi-user.target
