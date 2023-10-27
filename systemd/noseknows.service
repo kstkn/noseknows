@@ -4,12 +4,26 @@ After=network.target
 Before=prometheus.service
 
 [Service]
-Restart=on-failure
+Restart=always
 ExecStart=/usr/bin/noseknows
-StandardOutput=inherit
-StandardError=inherit
-RestartSec=10
-User=noseknows
+TimeoutStopSec=20s
+
+DynamicUser=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+PrivateUsers=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+UMask=077
 
 [Install]
 WantedBy=multi-user.target
