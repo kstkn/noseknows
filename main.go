@@ -15,6 +15,7 @@ const munich = "DEMUNC"
 
 const birch = "Betula"
 const haselnut = "Corylus"
+const grasses = "Poaceae"
 
 var germany *time.Location
 
@@ -80,7 +81,7 @@ func main() {
 
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
 		from := time.Now().Add(-24 * time.Hour).In(germany)
-		uri := createUrl(&from, nil, []string{munich}, []string{birch, haselnut})
+		uri := createUrl(&from, nil, []string{munich}, []string{birch, haselnut, grasses})
 
 		resp, err := http.Get(uri.String())
 		if err != nil {
