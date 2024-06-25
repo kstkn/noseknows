@@ -102,15 +102,29 @@ func main() {
 
 		w.Write([]byte("# HELP pollen_history_static pollen historical measurements\n# TYPE pollen_history_static gauge\n"))
 		w.Write([]byte("# HELP pollen_history pollen historical measurements\n# TYPE pollen_history gauge\n"))
+
+		latestDate := from
+		latestValues := make(map[string]map[string]float64)
 		for _, m := range respBody.Measurements {
 			for _, d := range m.Data {
+				if d.To.Equal(latestDate) || d.To.After(latestDate) {
+					latestDate = d.To.Time
+					if _, ok := latestValues[m.Location]; !ok {
+						latestValues[m.Location] = make(map[string]float64)
+					}
+					latestValues[m.Location][m.Name] = d.Value
+				}
 				t := "today_"
 				if d.To.Before(lastMidnight) {
 					t = "yesterday_"
 				}
 				w.Write([]byte(fmt.Sprintf(`pollen_history_static{location="%s",name="%s",time="%s"} %.2f`, m.Location, m.Name, t+d.To.Time.Format("15"), d.Value)))
 				w.Write([]byte("\n"))
-				w.Write([]byte(fmt.Sprintf(`pollen_history{location="%s",name="%s"} %.2f %d`, m.Location, m.Name, d.Value, d.To.UnixMilli())))
+			}
+		}
+		for l, m := range latestValues {
+			for n, v := range m {
+				w.Write([]byte(fmt.Sprintf(`pollen{location="%s",name="%s"} %.2f`, l, n, v)))
 				w.Write([]byte("\n"))
 			}
 		}
